@@ -12,6 +12,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'detail/:id',
           builder: (BuildContext context, GoRouterState state) {
+            BlocProvider.of<PoinCubit>(context).increment();
             return DetailScreen(id: int.parse(state.params['id']!));
           },
         ),

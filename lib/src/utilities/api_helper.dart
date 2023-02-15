@@ -19,18 +19,18 @@ class ApiHelper {
       throw left(FetchDataException('Bad Response'));
     }
 
-    return right(returnResponse(response));
+    return returnResponse(response);
   }
 }
 
-dynamic returnResponse(http.Response response) {
+Either<String, dynamic> returnResponse(http.Response response) {
   String responseJson = response.body;
   final jsonResponse = jsonDecode(responseJson);
   switch (response.statusCode) {
     case 200:
-      return responseJson;
+      return right(responseJson);
     case 500:
     default:
-      throw FetchDataException(jsonResponse['message'] ?? '');
+      throw left(jsonResponse['message'] ?? 'Error Guys');
   }
 }

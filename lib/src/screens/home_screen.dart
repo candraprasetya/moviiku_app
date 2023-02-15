@@ -8,8 +8,34 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
+        actions: [
+          BlocBuilder<PoinCubit, int>(
+            builder: (context, state) {
+              return '$state'
+                  .richText
+                  .bold
+                  .withTextSpanChildren([' Poin'.textSpan.normal.make()])
+                  .bold
+                  .makeCentered()
+                  .pOnly(right: 16);
+            },
+          ),
+
+          // StreamBuilder<int>(
+          //   stream: MovieService.pointStream(),
+          //   builder: (context, snapshot) {
+          //     if (snapshot.connectionState == ConnectionState.waiting) {
+          //       return const CircularProgressIndicator();
+          //     }
+          //     if (snapshot.hasData) {
+          //       return Center(child: Text('${snapshot.data} Poin'));
+          //     }
+          //     return Container();
+          //   },
+          // )
+        ],
       ),
-      body: FutureBuilder<Either<String, ListMovieModel>>(
+      body: FutureBuilder<dartz.Either<String, ListMovieModel>>(
           future: MovieService.fetchMovie(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

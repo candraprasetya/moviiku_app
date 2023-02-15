@@ -13,4 +13,11 @@ class MovieService {
         param: {'api_key': Commons.getApiKey()});
     return response.fold((l) => left(l), (r) => right(movieModelFromMap(r)));
   }
+
+  static Stream<int> pointStream() async* {
+    for (var i = 0; i < 10; i++) {
+      await Future.delayed(Duration(seconds: 2));
+      yield i;
+    }
+  }
 }
