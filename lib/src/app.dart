@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moviiku_app/src/screens/screens.dart';
 import 'package:moviiku_app/src/utilities/utilities.dart';
 
 class MyApp extends StatelessWidget {
@@ -7,9 +6,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       theme: myTheme,
-      home: const HomeScreen(),
     );
   }
 }
