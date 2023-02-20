@@ -1,10 +1,7 @@
-import 'dart:io';
-import 'dart:math';
-
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moviiku_app/src/blocs/blocs.dart';
 import 'package:moviiku_app/src/blocs/poin_cubit.dart';
 import 'package:moviiku_app/src/models/models.dart';
 import 'package:moviiku_app/src/services/services.dart';

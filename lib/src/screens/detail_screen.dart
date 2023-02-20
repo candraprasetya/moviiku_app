@@ -1,5 +1,20 @@
 part of 'screens.dart';
 
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
+
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget>
+    with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
 class DetailScreen extends StatelessWidget {
   final int id;
 
@@ -30,34 +45,53 @@ class DetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          MovieService.fetchDetailMovie(id);
+      body: BlocBuilder<DetailMovieBloc, DetailMovieState>(
+        builder: (context, state) {
+          if (state is DetailMovieIsLoading) {
+            return CircularProgressIndicator().centered();
+          }
+          if (state is DetailMovieIsSuccess) {
+            return VStack(
+              [
+                VxBox(
+                        child: Image.network(
+                            "https://image.tmdb.org/t/p/w500/${state.detail.backdropPath}"))
+                    .sizePCT(context: context, widthPCT: 100, heightPCT: 30)
+                    .make()
+              ],
+            ).scrollVertical(physics: AlwaysScrollableScrollPhysics());
+          }
+          return Container();
         },
-        child: FutureBuilder<dartz.Either<String, Result>>(
-            future: MovieService.fetchDetailMovie(id),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              }
-              if (snapshot.hasData) {
-                return snapshot.data!.fold(
-                  (l) => Text(l),
-                  (r) => VStack(
-                    [
-                      VxBox(
-                              child: Image.network(
-                                  "https://image.tmdb.org/t/p/w500/${r.backdropPath}"))
-                          .sizePCT(
-                              context: context, widthPCT: 100, heightPCT: 30)
-                          .make()
-                    ],
-                  ).scrollVertical(physics: AlwaysScrollableScrollPhysics()),
-                );
-              }
-              return const SizedBox();
-            }),
       ),
+      // body: RefreshIndicator(
+      //   onRefresh: () async {
+      //     MovieService.fetchDetailMovie(id);
+      //   },
+      //   child: FutureBuilder<dartz.Either<String, Result>>(
+      //       future: MovieService.fetchDetailMovie(id),
+      //       builder: (context, snapshot) {
+      //         if (snapshot.connectionState == ConnectionState.waiting) {
+      //           return const CircularProgressIndicator();
+      //         }
+      //         if (snapshot.hasData) {
+      //           return snapshot.data!.fold(
+      //             (l) => Text(l),
+      //             (r) => VStack(
+      //               [
+      //                 VxBox(
+      //                         child: Image.network(
+      //                             "https://image.tmdb.org/t/p/w500/${r.backdropPath}"))
+      //                     .sizePCT(
+      //                         context: context, widthPCT: 100, heightPCT: 30)
+      //                     .make()
+      //               ],
+      //             ).scrollVertical(physics: AlwaysScrollableScrollPhysics()),
+      //           );
+      //         }
+      //         return const SizedBox();
+      //       }),
+      // ),
     );
   }
 }

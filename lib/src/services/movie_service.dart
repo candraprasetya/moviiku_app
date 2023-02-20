@@ -8,6 +8,13 @@ class MovieService {
         (l) => left(l), (r) => right(listMovieModelFromMap(r)));
   }
 
+  static Future<Either<String, ListMovieModel>> fetchPopularMovie() async {
+    final response = await ApiHelper.get(Enpoints.popular,
+        param: {'api_key': Commons.getApiKey()});
+    return response.fold(
+        (l) => left(l), (r) => right(listMovieModelFromMap(r)));
+  }
+
   static Future<Either<String, Result>> fetchDetailMovie(int id) async {
     final response = await ApiHelper.get("${Enpoints.movie}/$id",
         param: {'api_key': Commons.getApiKey()});
