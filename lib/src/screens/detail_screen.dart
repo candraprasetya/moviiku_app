@@ -30,28 +30,34 @@ class DetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: FutureBuilder<dartz.Either<String, Result>>(
-          future: MovieService.fetchDetailMovie(id),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            if (snapshot.hasData) {
-              return snapshot.data!.fold(
-                (l) => Text(l),
-                (r) => VStack(
-                  [
-                    VxBox(
-                            child: Image.network(
-                                "https://image.tmdb.org/t/p/w500/${r.backdropPath}"))
-                        .sizePCT(context: context, widthPCT: 100, heightPCT: 30)
-                        .make()
-                  ],
-                ),
-              );
-            }
-            return const SizedBox();
-          }),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          MovieService.fetchDetailMovie(id);
+        },
+        child: FutureBuilder<dartz.Either<String, Result>>(
+            future: MovieService.fetchDetailMovie(id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              if (snapshot.hasData) {
+                return snapshot.data!.fold(
+                  (l) => Text(l),
+                  (r) => VStack(
+                    [
+                      VxBox(
+                              child: Image.network(
+                                  "https://image.tmdb.org/t/p/w500/${r.backdropPath}"))
+                          .sizePCT(
+                              context: context, widthPCT: 100, heightPCT: 30)
+                          .make()
+                    ],
+                  ).scrollVertical(physics: AlwaysScrollableScrollPhysics()),
+                );
+              }
+              return const SizedBox();
+            }),
+      ),
     );
   }
 }

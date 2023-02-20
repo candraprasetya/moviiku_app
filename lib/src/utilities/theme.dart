@@ -2,7 +2,6 @@ part of 'utilities.dart';
 
 //DEFINE THEMEDATA
 ThemeData myTheme = ThemeData(
-  textTheme: GoogleFonts.montserratTextTheme(),
   appBarTheme: AppBarTheme(
       centerTitle: true,
       iconTheme: const IconThemeData(color: colorName.darkGrey),

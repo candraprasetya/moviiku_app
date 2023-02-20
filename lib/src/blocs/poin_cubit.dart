@@ -9,4 +9,11 @@ class PoinCubit extends Cubit<int> {
       emit(state + 100);
     });
   }
+
+  @override
+  void onChange(Change<int> change) {
+    print('Current State : ${change.currentState}');
+    print('Next State : ${change.nextState}');
+    super.onChange(change);
+  }
 }

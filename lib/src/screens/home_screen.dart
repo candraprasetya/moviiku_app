@@ -36,46 +36,47 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: FutureBuilder<dartz.Either<String, ListMovieModel>>(
-          future: MovieService.fetchMovie(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return GridView.builder(
+        future: MovieService.fetchMovie(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 3 / 4,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16),
+              itemCount: 8,
+              itemBuilder: (context, index) {
+                return const MovieCard(
+                  isLoading: true,
+                );
+              },
+            );
+          }
+          if (snapshot.hasData) {
+            return snapshot.data!.fold(
+              (l) => Text(l),
+              (r) => GridView.builder(
                 padding: const EdgeInsets.all(16),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 3 / 4,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16),
-                itemCount: 8,
+                itemCount: r.results!.length,
                 itemBuilder: (context, index) {
-                  return const MovieCard(
-                    isLoading: true,
+                  final data = r.results![index];
+                  return MovieCard(
+                    data: data,
                   );
                 },
-              );
-            }
-            if (snapshot.hasData) {
-              return snapshot.data!.fold(
-                (l) => Text(l),
-                (r) => GridView.builder(
-                  padding: const EdgeInsets.all(16),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 3 / 4,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16),
-                  itemCount: r.results!.length,
-                  itemBuilder: (context, index) {
-                    final data = r.results![index];
-                    return MovieCard(
-                      data: data,
-                    );
-                  },
-                ),
-              );
-            }
-            return const SizedBox();
-          }),
+              ),
+            );
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 }
