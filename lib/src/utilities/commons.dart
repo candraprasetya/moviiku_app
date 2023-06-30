@@ -11,6 +11,11 @@ class Commons {
     return baseUrl;
   }
 
+  static String getBaseUrlStore() {
+    String baseUrl = dotenv.get('BASE_URL_STORE', fallback: '');
+    return baseUrl;
+  }
+
   static void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(

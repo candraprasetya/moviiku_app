@@ -21,6 +21,48 @@ class ApiHelper {
 
     return returnResponse(response);
   }
+
+  static Future<Either<String, dynamic>> getStore(String endPoint,
+      {Map<String, dynamic>? param}) async {
+    final uri = Uri.https(Commons.getBaseUrlStore(), endPoint, param);
+    late http.Response response;
+    try {
+      response = await http.get(
+        uri,
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+    } on SocketException {
+      throw left(FetchDataException('No Internet'));
+    } on FormatException {
+      throw left(FetchDataException('Bad Response'));
+    }
+
+    return returnResponse(response);
+  }
+
+  static Future<Either<String, dynamic>> post(String endPoint,
+      {Map<String, dynamic>? param}) async {
+    final uri = Uri.https(Commons.getBaseUrlStore(), endPoint, param);
+    late http.Response response;
+    try {
+      response = await http.post(
+        uri,
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+    } on SocketException {
+      throw left(FetchDataException('No Internet'));
+    } on FormatException {
+      throw left(FetchDataException('Bad Response'));
+    }
+
+    return returnResponse(response);
+  }
 }
 
 Either<String, dynamic> returnResponse(http.Response response) {

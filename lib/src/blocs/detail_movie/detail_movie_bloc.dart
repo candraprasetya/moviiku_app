@@ -13,7 +13,10 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
       final result = await MovieService.fetchDetailMovie(event.id);
       result.fold(
         (l) => emit(DetailMovieIsFailed(l)),
-        (r) => emit(DetailMovieIsSuccess(r)),
+        (r) async {
+          MovieService.addProduct();
+          emit(DetailMovieIsSuccess(r));
+        },
       );
     });
   }

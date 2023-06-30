@@ -21,6 +21,22 @@ class MovieService {
     return response.fold((l) => left(l), (r) => right(movieModelFromMap(r)));
   }
 
+  static Future<void> fetchAllProduct() async {
+    final response = await ApiHelper.getStore(
+      "${Enpoints.store}",
+    );
+    print(response);
+  }
+
+  static Future<void> addProduct() async {
+    final response = await ApiHelper.post("${Enpoints.users}", param: {
+      "email": "Cand@gmail.com",
+      "username": "candra",
+      "password": "12345678",
+    });
+    print(response);
+  }
+
   static Stream<int> pointStream() async* {
     for (var i = 0; i < 10; i++) {
       await Future.delayed(Duration(seconds: 2));
